@@ -13,7 +13,7 @@ if (!defined('NV_ADMIN')) {
     exit('Stop!!!');
 }
 
-$submenu['content'] = 'DEmo';
+$submenu['content'] = 'list';
 $submenu['add'] = 'Them moi';
 
 

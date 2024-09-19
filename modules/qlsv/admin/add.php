@@ -16,17 +16,18 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $page_title = $lang_module['list'];
 $array = [];
 
+$row['id'] = $nv_Request->get_int('id', 'post, get', 0);
 if($nv_Request-> isset_request('submit1', 'post')){
     $row['name'] = nv_substr($nv_Request->get_title('name', 'post', ''), 0, 250);
     $row['birth'] = $nv_Request->get_int('birth', 'post', '');
     $row['address'] = nv_substr($nv_Request->get_title('address', 'post', ''), 0, 250);
 
 
-    $_sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (
-        name, birth, address) VALUES (
-        :name, :birth, :address)';
+    // $_sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (
+    //     name, birth, address) VALUES (
+    //     :name, :birth, :address)';
     
-
+    $_sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET name=:name,birth=:birth,address=:address WHERE id='.$row['id'];
 
     $sth = $db->prepare($_sql);
     $sth->bindParam(':name', $row['name'], PDO::PARAM_STR);

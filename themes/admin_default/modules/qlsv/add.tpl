@@ -1,6 +1,7 @@
 <!-- BEGIN: main -->
 <div class="table-responsive">
     <form class="navbar-form" method="post" action="">
+    <input type="hidden" name="id" class="w300 form-control" value="{DATA.id}"/>
         <table>
                 <tr>
                     <td><strong>Name</strong><sup class="required">(*)</sup></td>

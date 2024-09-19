@@ -33,6 +33,7 @@ function nv_demo_list($array_data)
     if(!empty($array_data)){
         foreach($array_data as $value){
             $value['birth']= nv_date( 'd/m/y' ,$value['birth']);
+            $value['url_edit']= nv_url_rewrite( NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name.'&'. NV_OP_VARIABLE. '=add&id='.$value['id']);
             $xtpl->assign('DATA', $value);
             $xtpl->parse('main.loop');
         }

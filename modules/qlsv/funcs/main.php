@@ -15,7 +15,7 @@ if (!defined('NV_IS_MOD_DEMO')) {
 
 $array_data = [];
 
-$query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_demo');
+$query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv');
 while ($row = $query->fetch()) {
     $array_data[$row['id']] = $row;
 }

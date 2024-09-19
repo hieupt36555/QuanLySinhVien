@@ -12,6 +12,7 @@
                 <th class="text-nowrap">name</th>
                 <th class="text-nowrap">birth</th>
                 <th class="text-nowrap">address</th>
+                <th class="text-nowrap">option</th>
             </tr>
         </thead>
         <tbody>
@@ -21,6 +22,7 @@
                 <td class="text-nowrap">{DATA.name}</td>
                 <td class="text-nowrap">{DATA.birth}</td>
                 <td class="text-nowrap">{DATA.address}</td>
+                <td class="text-nowrap"><a href="{DATA.url_edit}" class="btn btn-default btn-sm"><i class="fa fa-edit"></i> {GLANG.edit}</a></td>
             </tr>
             <!-- END: loop -->
         </tbody>

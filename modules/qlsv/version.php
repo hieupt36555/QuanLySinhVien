@@ -14,7 +14,7 @@ if (!defined('NV_ADMIN') or !defined('NV_MAINFILE')) {
 }
 
 $module_version = [
-    'name' => 'Demo',
+    'name' => 'qlsv',
     'modfuncs' => 'main',
     'is_sysmod' => 0,
     'virtual' => 1,
