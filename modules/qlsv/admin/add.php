@@ -23,12 +23,16 @@ if($nv_Request-> isset_request('submit1', 'post')){
     $row['address'] = nv_substr($nv_Request->get_title('address', 'post', ''), 0, 250);
 
 
-    // $_sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (
-    //     name, birth, address) VALUES (
-    //     :name, :birth, :address)';
-    
-    $_sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET name=:name,birth=:birth,address=:address WHERE id='.$row['id'];
 
+    if($row['id'] > 0 ){
+        $_sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET name=:name,birth=:birth,address=:address WHERE id='.$row['id'];
+        
+    }else{
+        $_sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (
+            name, birth, address) VALUES (
+            :name, :birth, :address)';
+    }
+ 
     $sth = $db->prepare($_sql);
     $sth->bindParam(':name', $row['name'], PDO::PARAM_STR);
     $sth->bindParam(':birth', $row['birth'], PDO::PARAM_STR);
@@ -41,7 +45,18 @@ if($nv_Request-> isset_request('submit1', 'post')){
 
 }
 
+else if($row['id'] > 0 ){
+    $sql = "SELECT * FROM " . NV_PREFIXLANG . "_qlsv WHERE id=" . $row['id'];
+    $row = $db->query($sql)->fetch();
+}
+else{
+    $row['name']="";
+    $row['birth']= 0;
+    $row['address']="";
+}
+
 $xtpl = new XTemplate('add.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+$xtpl->assign('DATA', $row);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
 
