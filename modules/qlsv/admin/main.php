@@ -17,10 +17,32 @@ $page_title = $lang_module['list'];
 $array = [];
 
 // $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . NV_LANG_DATA . '_demo');
-$query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv');
-while ($row = $query->fetch()) {
-    $array[$row['id']] = $row;
-}
+
+// $offset = ($page - 1) * $per_page;
+// $page = $nv_Request->get_int('page', 'get', 1);
+
+
+
+
+
+// $db->sqlreset()
+//     ->select('*')
+//     ->from(NV_PREFIXLANG  . "_qlsv");
+//     $sql=$db->$sql();
+//     $result=$db->$query($sql);
+// while ($row = $query->fetch()) {
+//     $array[$row['id']] = $row;
+// }
+//     $perpage = 5;
+//     $page = 1;
+// $db->select('*')
+//     ->
+    // $result = $db->query($sql);
+    // $result = $result->fetchColumn();
+    // print_r($result);
+    // die;
+
+
 
 if($nv_Request-> isset_request('action', 'post, get')){
     $row['id'] = $nv_Request->get_int('id', 'post, get', 0);
@@ -35,6 +57,30 @@ $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $global_config['modu
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
 
+
+$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
+$limit = 2; 
+$offset = ($page - 1) * $limit;
+$query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv LIMIT ' . $limit . ' OFFSET ' . $offset);
+while ($row = $query->fetch()) {
+    $array[$row['id']] = $row;
+}
+$total_items = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_qlsv')->fetchColumn();
+$total_pages = ceil($total_items / $limit); // Tính tổng số trang
+
+$prev_page = ($page > 1) ? $page - 1 : 1;
+$next_page = ($page < $total_pages) ? $page + 1 : $total_pages;
+
+
+$xtpl->assign('CURRENT_PAGE', $page);
+$xtpl->assign('TOTAL_PAGES', $total_pages);
+$xtpl->assign('PREV_PAGE_URL', NV_BASE_ADMINURL . 'index.php?language=' . NV_LANG_DATA . '&nv=qlsv&page=' . $prev_page . '&keyword=' . urlencode($keyword));
+$xtpl->assign('NEXT_PAGE_URL', NV_BASE_ADMINURL . 'index.php?language=' . NV_LANG_DATA . '&nv=qlsv&page=' . $next_page . '&keyword=' . urlencode($keyword));
+$xtpl->assign('KEYWORD', htmlspecialchars($keyword, ENT_QUOTES));
+
+
 if(!empty($array)){
     foreach($array as $value){
         $value['birth']= nv_date( 'd/m/y' ,$value['birth']);
@@ -44,6 +90,22 @@ if(!empty($array)){
         $xtpl->parse('main.loop');
     }
 }
+
+
+// search function
+if (!empty($keyword)) {
+    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_qlsv WHERE name LIKE :keyword LIMIT ' . $limit . ' OFFSET ' . $offset;
+    $query = $db->prepare($sql);
+    $query->bindValue(':keyword', '%' . $keyword . '%', PDO::PARAM_STR);
+    $query->execute();
+
+} else {
+    $query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv LIMIT ' . $limit . ' OFFSET ' . $offset);
+    echo 'keyword null';
+}
+
+
+
 
 $xtpl->parse('main');
 $contents = $xtpl->text('main');

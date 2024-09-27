@@ -1,5 +1,11 @@
 <!-- BEGIN: main -->
 <div class="table-responsive">
+<form action="{NV_BASE_ADMINURL}index.php" method="get" class="search-form">
+  <input type="hidden" name="language" value="{NV_LANG_DATA}">
+  <input type="hidden" name="nv" value="qlsv">
+<input type="text" name="keyword" placeholder="Nhập tên để tìm kiếm..." value="{KEYWORD}">
+  <button type="submit">Tìm kiếm</button>
+</form>
     <table class="table table-striped table-bordered table-hover">
         <colgroup>
             <col class="w100">
@@ -29,5 +35,12 @@
             <!-- END: loop -->
         </tbody>
     </table>
+<div class="pagination">
+  <a href="{PREV_PAGE_URL}" class="prev" {if CURRENT_PAGE == 1}style="display:none;"{/if}>Trang trước</a>
+
+  <span>Trang {CURRENT_PAGE} / {TOTAL_PAGES}</span>
+
+  <a href="{NEXT_PAGE_URL}" class="next" {if CURRENT_PAGE == TOTAL_PAGES}style="display:none;"{/if}>Trang sau</a>
+</div>
 </div>
 <!-- END: main -->
