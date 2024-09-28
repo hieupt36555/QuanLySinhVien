@@ -15,20 +15,7 @@ if (!defined('NV_IS_MOD_DEMO')) {
 
 $array_data = [];
 
-$query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv');
-while ($row = $query->fetch()) {
-    $array_data[$row['id']] = $row;
-}
-$contents = nv_demo_list($array_data);
 
-
-$product_id = $nv_Request->get_int('id', 'get', 0);
-if ($product_id > 0) {
-    include NV_ROOTDIR . '/modules/qlsv/details.php';
-    $contents = view_product_details($product_id);
-} else {
-    $contents = nv_demo_list($array_data);
-}
 
 
 include NV_ROOTDIR . '/includes/header.php';
