@@ -14,3 +14,25 @@ if (!defined('NV_SYSTEM')) {
 }
 
 define('NV_IS_MOD_DEMO', true);
+
+
+function get_data_from_db() {
+    global $db;
+
+    $array_data = [];
+
+    $query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv');
+    while ($row = $query->fetch()) {
+        $array_data[$row['id']] = $row;
+    }
+
+    return $array_data;
+}
+function get_product_details($product_id) {
+    if ($product_id > 0) {
+        include NV_ROOTDIR . '/modules/qlsv/details.php';
+        return view_product_details($product_id);
+    }
+    return false;
+}
+

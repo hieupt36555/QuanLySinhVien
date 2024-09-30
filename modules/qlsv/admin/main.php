@@ -16,33 +16,6 @@ if (!defined('NV_IS_FILE_ADMIN')) {
 $page_title = $lang_module['list'];
 $array = [];
 
-// $db->query('SELECT * FROM ' . $db_config['prefix'] . '_' . NV_LANG_DATA . '_demo');
-
-// $offset = ($page - 1) * $per_page;
-// $page = $nv_Request->get_int('page', 'get', 1);
-
-
-
-
-
-// $db->sqlreset()
-//     ->select('*')
-//     ->from(NV_PREFIXLANG  . "_qlsv");
-//     $sql=$db->$sql();
-//     $result=$db->$query($sql);
-// while ($row = $query->fetch()) {
-//     $array[$row['id']] = $row;
-// }
-//     $perpage = 5;
-//     $page = 1;
-// $db->select('*')
-//     ->
-    // $result = $db->query($sql);
-    // $result = $result->fetchColumn();
-    // print_r($result);
-    // die;
-
-
 
 if($nv_Request-> isset_request('action', 'post, get')){
     $row['id'] = $nv_Request->get_int('id', 'post, get', 0);
@@ -58,17 +31,17 @@ $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);
 
 
-$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+// Tính Năng Phân Trang & tìm kiếm
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-$limit = 2; 
+$limit = 4; 
 $offset = ($page - 1) * $limit;
 $query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv LIMIT ' . $limit . ' OFFSET ' . $offset);
 while ($row = $query->fetch()) {
     $array[$row['id']] = $row;
 }
 $total_items = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_qlsv')->fetchColumn();
-$total_pages = ceil($total_items / $limit); // Tính tổng số trang
+$total_pages = ceil($total_items / $limit);
 
 $prev_page = ($page > 1) ? $page - 1 : 1;
 $next_page = ($page < $total_pages) ? $page + 1 : $total_pages;
@@ -92,7 +65,8 @@ if(!empty($array)){
 }
 
 
-// search function
+// tìm kiếm
+$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
 if (!empty($keyword)) {
     $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_qlsv WHERE name LIKE :keyword LIMIT ' . $limit . ' OFFSET ' . $offset;
     $query = $db->prepare($sql);
