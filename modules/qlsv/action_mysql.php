@@ -10,6 +10,7 @@
  */
 
 if (!defined('NV_IS_FILE_MODULES')) {
-    exit('Stop!!!');
+    exit('aStop!!!');
 }
 
+$get_all_products = 'SELECT * FROM ' . NV_PREFIXLANG . '_qlsv';
