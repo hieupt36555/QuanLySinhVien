@@ -23,7 +23,6 @@ function nv_demo_list($array_data)
     $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme']);
     $xtpl->assign('LANG', $lang_module);
     $xtpl->assign('GLANG', $lang_global);
-    $xtpl->assign('CONTENT', $row);
  
     // Kiểm tra nếu mảng không rỗng
     if(!empty($array_data)){

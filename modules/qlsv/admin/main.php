@@ -34,7 +34,7 @@ $xtpl->assign('GLANG', $lang_global);
 // Tính Năng Phân Trang & tìm kiếm
 
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-$limit = 4; 
+$limit = 5; 
 $offset = ($page - 1) * $limit;
 $query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv LIMIT ' . $limit . ' OFFSET ' . $offset);
 while ($row = $query->fetch()) {
@@ -55,15 +55,21 @@ $xtpl->assign('KEYWORD', htmlspecialchars($keyword, ENT_QUOTES));
 
 
 if(!empty($array)){
+    $stt = 1;
     foreach($array as $value){
+        $value['stt'] = $stt++;
         $value['birth']= nv_date( 'd/m/y' ,$value['birth']);
         $value['url_edit']= NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name.'&'. NV_OP_VARIABLE. '=add&id='.$value['id'];
         $value['url_delete']= NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name.'&'. NV_OP_VARIABLE. '=main&id='.$value['id']. '&action=delete&checksess='. md5($row['id']. NV_CHECK_SESSION);
+        $value['image']= NV_BASE_SITEURL . $value['image'];
         $xtpl->assign('DATA', $value);
         $xtpl->parse('main.loop');
     }
 }
 
+// if (!empty($rowcontent['homeimgfile']) and file_exists(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'])) {
+//     $rowcontent['homeimgfile'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $rowcontent['homeimgfile'];
+// }
 
 // tìm kiếm
 $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
