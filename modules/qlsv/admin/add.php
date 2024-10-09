@@ -9,11 +9,14 @@ $array = [];
 
 $row['id'] = $nv_Request->get_int('id', 'post, get', 0);
 
+
+
 if ($nv_Request->isset_request('submit1', 'post')) {
     $row['name'] = nv_substr($nv_Request->get_title('name', 'post', ''), 0, 250);
     $row['birth'] = nv_substr($nv_Request->get_title('birth', 'post', ''), 0, 250); // Thay đổi nếu cần
     $row['address'] = nv_substr($nv_Request->get_title('address', 'post', ''), 0, 250);
     $row['email'] = nv_substr($nv_Request->get_title('email', 'post', ''), 0, 250);
+    $row['id_class'] = $nv_Request->get_int('id_class', 'post', 0);  // Lấy giá trị id_class từ form
 
 
     // Khởi tạo Class upload
@@ -35,11 +38,11 @@ if ($nv_Request->isset_request('submit1', 'post')) {
         $row['image'] = 'no_image.png';
     }
 
-    // Câu lệnh SQL
+    // Xử lý SQL: nếu có id thì cập nhật, nếu không thì thêm mới
     if ($row['id'] > 0) {
-        $_sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET name=:name, birth=:birth, address=:address, email=:email, image=:image WHERE id=' . $row['id'];
+        $_sql = 'UPDATE ' . NV_PREFIXLANG . '_' . $module_data . ' SET name=:name, birth=:birth, address=:address, email=:email, image=:image, id_class=:id_class WHERE id=' . $row['id'];
     } else {
-        $_sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (name, birth, address, email, image) VALUES (:name, :birth, :address, :email, :image)';
+        $_sql = 'INSERT INTO ' . NV_PREFIXLANG . '_' . $module_data . ' (name, birth, address, email, image, id_class) VALUES (:name, :birth, :address, :email, :image, :id_class)';
     }
 
     $sth = $db->prepare($_sql);
@@ -48,6 +51,7 @@ if ($nv_Request->isset_request('submit1', 'post')) {
     $sth->bindParam(':address', $row['address'], PDO::PARAM_STR);
     $sth->bindParam(':email', $row['email'], PDO::PARAM_STR);
     $sth->bindParam(':image', $row['image'], PDO::PARAM_STR);
+    $sth->bindParam(':id_class', $row['id_class'], PDO::PARAM_INT);
 
     if (!$sth->execute()) {
         // Xử lý lỗi nếu có
@@ -70,9 +74,26 @@ if ($nv_Request->isset_request('submit1', 'post')) {
     $row['address'] = "";
     $row['email'] = "";
     $row['image'] = "";
+    $row['id_class'] = 0;  // Giá trị mặc định của lớp
+
+}
+$xtpl = new XTemplate('add.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+
+// Lấy danh sách lớp để hiển thị trong select
+$class_list = $db->query("SELECT * FROM " . NV_PREFIXLANG . "_qlsv_class")->fetchAll();
+
+//vòng lặp hiển thị tất cả các lớp
+foreach ($class_list as $class) {
+    $xtpl->assign('CLASS', [
+        'id' => $class['id'],
+        'name' => $class['name'],
+        'selected' => ($row['id_class'] == $class['id']) ? 'selected="selected"' : ''
+    ]);
+    $xtpl->parse('main.class');
+    $xtpl->parse('main.loop'); 
 }
 
-$xtpl = new XTemplate('add.tpl', NV_ROOTDIR . '/themes/' . $global_config['module_theme'] . '/modules/' . $module_file);
+
 $xtpl->assign('DATA', $row);
 $xtpl->assign('LANG', $lang_module);
 $xtpl->assign('GLANG', $lang_global);

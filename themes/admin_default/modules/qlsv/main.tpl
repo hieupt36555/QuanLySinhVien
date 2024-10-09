@@ -16,6 +16,7 @@
             <tr class="text-center">
                 <th class="text-nowrap">STT</th>
                 <th class="text-nowrap">Name</th>
+                <th class="text-nowrap">Class</th>
                 <th class="text-nowrap">Birth</th>
                 <th class="text-nowrap">Address</th>
                 <th class="text-nowrap">Email</th>
@@ -28,10 +29,11 @@
             <tr class="text-center">
                 <td class="text-nowrap">{DATA.stt}</td>
                 <td class="text-nowrap">{DATA.name}</td>
+                <td class="text-nowrap">{DATA.class_name}</td>
                 <td class="text-nowrap">{DATA.birth}</td>
                 <td class="text-nowrap">{DATA.address}</td>
                 <td class="text-nowrap">{DATA.email}</td>
-                <td class="text-nowrap"><img src="{DATA.image}" alt="{DATA.image}" style="width: 100px; height: auto;"></td>
+                <td class="text-nowrap"><img src="{DATA.image}" alt="{DATA.image}" style="width: 50px; height: auto;"></td>
                 <td class="text-nowrap">
                     <a href="{DATA.url_edit}" class="btn btn-default btn-sm"><iclass="fa fa-edit"></i> {GLANG.edit}</a>
                     <a class="btn btn-danger" href="{DATA.url_delete}">Xóa</a>

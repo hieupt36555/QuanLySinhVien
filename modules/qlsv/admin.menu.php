@@ -12,9 +12,8 @@
 if (!defined('NV_ADMIN')) {
     exit('Stop!!!');
 }
-
-$submenu['content'] = 'list';
-$submenu['add'] = 'Them moi';
+$submenu['add'] = 'Thêm Sinh Viên';
+$submenu[''] = 'Danh Sách';
 
 
 if (defined('NV_IS_SPADMIN')) {
