@@ -68,7 +68,7 @@ if (!empty($array)) {
     foreach ($array as $value) {
         $value['stt'] = $stt++;
         $value['birth'] = nv_date('d/m/y', $value['birth']);
-        $value['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=add&id=' . $value['id'];
+        $value['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=add_student&id=' . $value['id'];
         $value['url_delete'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=main&id=' . $value['id'] . '&action=delete&checksess=' . md5($row['id'] . NV_CHECK_SESSION);
         $value['image'] = NV_BASE_SITEURL . $value['image'];
         $value['class_name'] = isset($category_list[$value['id_class']]) ? $category_list[$value['id_class']] : 'Chưa có lớp';

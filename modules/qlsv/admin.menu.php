@@ -12,8 +12,9 @@
 if (!defined('NV_ADMIN')) {
     exit('Stop!!!');
 }
-$submenu['add'] = 'Thêm Sinh Viên';
+$submenu['add_student'] = 'Thêm Sinh Viên';
 $submenu[''] = 'Danh Sách Sinh Viên';
+$submenu['add_class'] = 'Thêm Lớp';
 $submenu['listclass'] = 'Danh Sách Lớp';
 
 
