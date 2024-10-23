@@ -36,7 +36,7 @@
                 <td class="text-nowrap"><img src="{DATA.image}" alt="{DATA.image}" style="width: 50px; height: auto;"></td>
                 <td class="text-nowrap">
                     <a href="{DATA.url_edit}" class="btn btn-default btn-sm"><iclass="fa fa-edit"></i> {GLANG.edit}</a>
-                    <a class="btn btn-danger" href="{DATA.url_delete}">Xóa</a>
+                    <a class="btn btn-danger" href="{DATA.url_delete}" onclick="return confirm('Bạn có chắc chắn muốn xóa sinh viên này không?');">Xóa</a>
                 </td>
             </tr>
             <!-- END: loop -->

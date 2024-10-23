@@ -20,6 +20,7 @@ $array = [];
 if ($nv_Request->isset_request('action', 'post, get')) {
     $row['id'] = $nv_Request->get_int('id', 'post, get', 0);
     $checksess = $nv_Request->get_title('checksess', 'post, get', '');
+
     if ($row['id'] > 0  and $checksess == md5($row['id'] . NV_CHECK_SESSION)) {
         $db->query('DELETE FROM `nv4_vi_qlsv` WHERE id=' . $row['id']);
     }
@@ -32,8 +33,7 @@ $xtpl->assign('GLANG', $lang_global);
 
 
 // Tính Năng Phân Trang & tìm kiếm
-
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = $nv_Request->get_int('page', 'get', 1); // Nếu không có giá trị page thì mặc định là 1
 $limit = 5;
 $offset = ($page - 1) * $limit;
 $query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv LIMIT ' . $limit . ' OFFSET ' . $offset);
@@ -46,6 +46,28 @@ $total_pages = ceil($total_items / $limit);
 $prev_page = ($page > 1) ? $page - 1 : 1;
 $next_page = ($page < $total_pages) ? $page + 1 : $total_pages;
 
+
+//chức năng tìm kiếm lỗi & xung đột với chức năng xóa 
+// tìm kiếm
+$keyword = $nv_Request->get_title('keyword', 'get', '');
+if (!empty($keyword)) {
+    // Nếu có từ khóa, chuẩn bị truy vấn với điều kiện LIKE
+    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_qlsv WHERE name LIKE :keyword LIMIT ' . $limit . ' OFFSET ' . $offset;
+    $query = $db->prepare($sql);
+    $query->bindValue(':keyword', '%' . $keyword . '%', PDO::PARAM_STR);
+    $query->execute();
+    $array = $query->fetchAll(PDO::FETCH_ASSOC); // Lưu kết quả vào mảng
+    // Cập nhật tổng số sinh viên tìm được
+    $total_items = $db->prepare('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_qlsv WHERE name LIKE :keyword');
+    $total_items->bindValue(':keyword', '%' . $keyword . '%', PDO::PARAM_STR);
+    $total_items->execute();
+    $total_items = $total_items->fetchColumn();
+} else {
+    // Nếu không có từ khóa, lấy tất cả sinh viên
+    $query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv LIMIT ' . $limit . ' OFFSET ' . $offset);
+    $array = $query->fetchAll(PDO::FETCH_ASSOC); // Đã thêm dòng này
+    $total_items = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_qlsv')->fetchColumn();
+}
 
 $xtpl->assign('CURRENT_PAGE', $page);
 $xtpl->assign('TOTAL_PAGES', $total_pages);
@@ -69,7 +91,9 @@ if (!empty($array)) {
         $value['stt'] = $stt++;
         $value['birth'] = nv_date('d/m/y', $value['birth']);
         $value['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=add_student&id=' . $value['id'];
-        $value['url_delete'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=main&id=' . $value['id'] . '&action=delete&checksess=' . md5($row['id'] . NV_CHECK_SESSION);
+        $value['url_delete'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=main&id=' . $value['id'] . '&action=delete&checksess=' . md5($value['id'] . NV_CHECK_SESSION);
+        // Thêm xác nhận trước khi xóa bằng JavaScript
+        $value['confirm_delete'] = 'return confirm("Bạn có chắc chắn muốn xóa sinh viên này không?");';
         $value['image'] = NV_BASE_SITEURL . $value['image'];
         $value['class_name'] = isset($category_list[$value['id_class']]) ? $category_list[$value['id_class']] : 'Chưa có lớp';
         $xtpl->assign('DATA', $value);
@@ -78,16 +102,6 @@ if (!empty($array)) {
 }
 
 
-// tìm kiếm
-$keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
-if (!empty($keyword)) {
-    $sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_qlsv WHERE name LIKE :keyword LIMIT ' . $limit . ' OFFSET ' . $offset;
-    $query = $db->prepare($sql);
-    $query->bindValue(':keyword', '%' . $keyword . '%', PDO::PARAM_STR);
-    $query->execute();
-} else {
-    $query = $db->query('SELECT * FROM ' . NV_PREFIXLANG . '_qlsv LIMIT ' . $limit . ' OFFSET ' . $offset);
-}
 
 
 

@@ -43,9 +43,7 @@ if ($nv_Request->isset_request('submit1', 'post')) {
     }
 
     $row['id_class'] = $nv_Request->get_int('id_class', 'post', 0);
-    if ($row['id_class'] == 0) {
-        $error_class = 'Vui lòng chọn lớp';
-    }
+
 
     // Phần xử lý upload ảnh 
     if (isset($_FILES, $_FILES['image'], $_FILES['image']['tmp_name']) and is_uploaded_file($_FILES['image']['tmp_name'])) {
