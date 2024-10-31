@@ -47,7 +47,6 @@ $prev_page = ($page > 1) ? $page - 1 : 1;
 $next_page = ($page < $total_pages) ? $page + 1 : $total_pages;
 
 
-//chức năng tìm kiếm lỗi & xung đột với chức năng xóa 
 // tìm kiếm
 $keyword = $nv_Request->get_title('keyword', 'get', '');
 if (!empty($keyword)) {
