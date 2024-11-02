@@ -3,6 +3,8 @@
 if (!defined('NV_IS_MOD_DEMO')) {
     exit('Stop!!!');
 }
+require_once NV_ROOTDIR . '/modules/qlsv/funcs/detail.php';
+
 
 // Lấy trang hiện tại từ URL
 $page = $nv_Request->get_int('page', 'get', 1);
@@ -38,28 +40,53 @@ if (!empty($keyword)) {
     $total_items = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_qlsv')->fetchColumn();
 }
 
+// Lấy id_class từ request
+$selected_class_id = $nv_Request->get_int('id_class', 'get', 0);
+// Truy vấn danh sách sinh viên theo lớp học
+$sql = 'SELECT * FROM ' . NV_PREFIXLANG . '_qlsv WHERE 1';
+if ($selected_class_id > 0) {
+    $sql .= ' AND id_class = ' . $selected_class_id;
+}
+$sql .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
+
+$query = $db->query($sql);
+while ($row = $query->fetch()) {
+    $array[$row['id']] = $row;
+}
+
+
 // Tính toán tổng số trang
+$total_items = $db->query('SELECT COUNT(*) FROM ' . NV_PREFIXLANG . '_qlsv WHERE 1' . ($selected_class_id > 0 ? ' AND id_class = ' . $selected_class_id : ''))->fetchColumn();
 $total_pages = ceil($total_items / $limit);
-$prev_page = ($page > 1) ? $page - 1 : 1; // Trang trước
-$next_page = ($page < $total_pages) ? $page + 1 : $total_pages; // Trang sau
+$prev_page = ($page > 1) ? $page - 1 : 1;
+$next_page = ($page < $total_pages) ? $page + 1 : $total_pages;
 
 // Gọi hàm hiển thị danh sách hoặc chi tiết sản phẩm dựa trên tham số `id`
 $product_id = $nv_Request->get_int('id', 'get', 0);
 if ($product_id > 0) {
+    // Nếu có ID sản phẩm, gọi hàm để lấy thông tin chi tiết
     $contents = view_product_details($product_id);
 } else {
-    $contents = nv_demo_list($array_data, $total_pages, $page, $keyword);
+    // Nếu không có ID sản phẩm, lấy danh sách sinh viên
+    $contents = nv_demo_list($array_data, $total_pages, $page, $keyword,$prev_page,$next_page);
 }
 
 // Phân trang và URL tìm kiếm
 $xtpl = new XTemplate('main.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_info['module_theme']);
 $xtpl->assign('CURRENT_PAGE', $page);
-$xtpl->assign('TOTAL_PAGES', $total_pages);
-$xtpl->assign('PREV_PAGE_URL', NV_BASE_SITEURL . 'index.php?language=' . NV_LANG_DATA . '&nv=qlsv&page=' . $prev_page . '&keyword=' . urlencode($keyword));
-$xtpl->assign('NEXT_PAGE_URL', NV_BASE_SITEURL . 'index.php?language=' . NV_LANG_DATA . '&nv=qlsv&page=' . $next_page . '&keyword=' . urlencode($keyword));
 $xtpl->assign('KEYWORD', htmlspecialchars($keyword, ENT_QUOTES));
-$xtpl->assign('PAGINATION', generate_pagination_links($page, $total_pages, $keyword));
 
+
+// Lấy danh sách lớp học
+$class_list = $db->query("SELECT * FROM " . NV_PREFIXLANG . "_qlsv_class")->fetchAll();
+foreach ($class_list as $class) {
+    $xtpl->assign('CLASS', [
+        'id' => $class['id'],
+        'name' => $class['name'],
+        'selected' => ($selected_class_id == $class['id']) ? 'selected="selected"' : ''
+    ]);
+    $xtpl->parse('main.class');
+}
 // Kết xuất nội dung ra ngoài site
 include NV_ROOTDIR . '/includes/header.php';
 echo nv_site_theme($contents);

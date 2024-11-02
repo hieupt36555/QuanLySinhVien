@@ -23,3 +23,5 @@ $lang_module['add_time'] = 'Được thêm vào';
 $lang_module['edit_time'] = 'Sửa chữa lần cuối';
 $lang_module['not_found'] = 'Thật tiếc!!! Chủ đề bạn cần tìm không tồn tại';
 $lang_module['warning'] = 'Bài viết này đang ở trạng thái <strong>Ngưng hoạt động</strong>, chỉ người quản trị mới có thể nhìn thấy';
+//thêm key mới
+$lang_module[''] = 'Sao chép bài viết';
