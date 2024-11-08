@@ -89,7 +89,6 @@ if (!empty($array)) {
     $stt = 1;
     foreach ($array as $value) {
         $value['stt'] = $stt++;
-        $value['birth'] = nv_date('d/m/y', $value['birth']);
         $value['url_edit'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=add_student&id=' . $value['id'];
         $value['url_delete'] = NV_BASE_ADMINURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=main&id=' . $value['id'] . '&action=delete&checksess=' . md5($value['id'] . NV_CHECK_SESSION);
         $value['confirm_delete'] = 'return confirm("Bạn có chắc chắn muốn xóa sinh viên này không?");';

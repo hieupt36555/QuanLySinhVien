@@ -23,7 +23,7 @@
                     <tr>
                         <td><strong>Ngày Sinh</strong>: <sup class="required">(∗)</sup></td>
                         <td>
-                            <input type="text" name="birth" class="form-control" style="width:100%"
+                            <input type="date" name="birth" class="form-control" style="width:100%"
                                 value="{DATA.birth}" />
                             <div class="text-danger">{ERROR_BIRTH}</div>
                         </td>

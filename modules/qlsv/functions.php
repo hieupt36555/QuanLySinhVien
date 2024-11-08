@@ -31,7 +31,6 @@ function nv_demo_list($array_data, $total_pages, $current_page, $keyword,$prev_p
         $stt = 1;
         foreach ($array_data as $value) {
             $value['stt'] = $stt++;
-            $value['birth'] = nv_date('d/m/y', $value['birth']); // Chuyển đổi định dạng ngày tháng
             $value['url_detail'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&' . NV_NAME_VARIABLE . '=' . $module_name . '&' . NV_OP_VARIABLE . '=detail&id=' . $value['id'];
             $value['image'] = NV_BASE_SITEURL . $value['image'];
             $value['class_name'] = isset($value['class_name']) ? $value['class_name'] : 'Chưa có lớp'; // Hiển thị lớp học

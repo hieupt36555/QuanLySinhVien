@@ -39,7 +39,6 @@ if (!empty($array)) {
 
         if (!empty($students)) {
             foreach ($students as $student) {
-                $student['birth'] = nv_date('d/m/y', $student['birth']);
                 $xtpl->assign('STUDENT', $student);
                 $xtpl->parse('main.loop.student_loop'); // Parse sinh viên trong mỗi lớp
             }
