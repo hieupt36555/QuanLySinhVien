@@ -17,7 +17,9 @@ $allow_func = [
     'main',
     'add_student',
     'listclass',
-    'add_class'
+    'add_class',
+    'detailclass',
+    'detailstudent'
 
 ];
 

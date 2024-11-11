@@ -50,32 +50,3 @@ function nv_demo_list($array_data, $total_pages, $current_page, $keyword,$prev_p
 
 
 
-// function generate_pagination_links($current_page, $total_pages, $keyword)
-// {
-//     $pagination_html = '<nav aria-label="Page navigation example"><ul class="pagination">';
-
-//     // Link trang trước
-//     if ($current_page > 1) {
-//         $prev_page = $current_page - 1;
-//         $pagination_html .= '<li class="page-item"><a class="page-link" href="' . NV_BASE_SITEURL . 'index.php?language=' . NV_LANG_DATA . '&nv=qlsv&page=' . $prev_page . '&keyword=' . urlencode($keyword) . '">Trang trước</a></li>';
-//     }
-
-//     // Thêm các liên kết đến các trang
-//     for ($i = 1; $i <= $total_pages; $i++) {
-//         if ($i == $current_page) {
-//             $pagination_html .= '<li class="page-item active"><a class="page-link" href="#">' . $i . '</a></li>'; // Trang hiện tại
-//         } else {
-//             $pagination_html .= '<li class="page-item"><a class="page-link" href="' . NV_BASE_SITEURL . 'index.php?language=' . NV_LANG_DATA . '&nv=qlsv&page=' . $i . '&keyword=' . urlencode($keyword) . '">' . $i . '</a></li>';
-//         }
-//     }
-
-//     // Link trang kế tiếp
-//     if ($current_page < $total_pages) {
-//         $next_page = $current_page + 1;
-//         $pagination_html .= '<li class="page-item"><a class="page-link" href="' . NV_BASE_SITEURL . 'index.php?language=' . NV_LANG_DATA . '&nv=qlsv&page=' . $next_page . '&keyword=' . urlencode($keyword) . '">Trang sau</a></li>';
-//     }
-
-//     $pagination_html .= '</ul></nav>';
-
-//     return $pagination_html;
-// }

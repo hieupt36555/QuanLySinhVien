@@ -1,11 +1,15 @@
 <!-- BEGIN: main -->
 <div class="table-responsive">
-    <form action="" method="get" class="search-form">
+    <form action="" method="get" class="search-form d-flex mb-3">
         <input type="hidden" name="language" value="{NV_LANG_DATA}">
         <input type="hidden" name="nv" value="qlsv">
-        <input type="text" name="keyword" placeholder="Nhập tên để tìm kiếm..." value="{KEYWORD}">
-        <button type="submit">Tìm kiếm</button>
+
+        <input type="text" class="form-control" name="keyword" placeholder="Nhập tên để tìm kiếm..."
+            value="{KEYWORD}">
+
+        <button type="submit" class="btn btn-success">Tìm kiếm</button>
     </form>
+
     <table class="table table-striped table-bordered table-hover">
         <colgroup>
             <col class="w100">
@@ -25,10 +29,12 @@
                 <td class="text-nowrap">{DATA.stt}</td>
                 <td class="text-nowrap">{DATA.name}</td>
                 <td class="text-nowrap">
-                    <a href="{DATA.url_edit}" class="btn btn-default btn-sm">
+                    <a href="{DATA.url_edit}" class="btn btn-warning ">
                         <iclass="fa fa-edit"></i> {GLANG.edit}
                     </a>
                     <a class="btn btn-danger" href="{DATA.url_delete}">Xóa</a>
+                    <a href="{DATA.url_detail}" class="btn btn-primary ">Chi tiết</a>
+
                 </td>
             </tr>
             <!-- Hiển thị danh sách sinh viên trong lớp -->

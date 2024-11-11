@@ -18,6 +18,7 @@ $submenu['add_class'] = 'Thêm Lớp';
 $submenu['listclass'] = 'Danh Sách Lớp';
 
 
+
 if (defined('NV_IS_SPADMIN')) {
     $submenu['config'] = $lang_module['config'];
 }

@@ -17,6 +17,9 @@ $success_message = ''; // Biến để lưu thông báo thành công
 // Lấy id từ request
 $row['id'] = $nv_Request->get_int('id', 'post, get', 0);
 
+// Lấy id_class từ URL nếu có, nếu không thì giữ nguyên giá trị mặc định từ request hoặc mặc định là 0
+$row['id_class'] = $nv_Request->get_int('id_class', 'get', $row['id_class']);
+
 // Nếu form được submit
 if ($nv_Request->isset_request('submit1', 'post')) {
     // Lấy các dữ liệu từ form và thực hiện validate
@@ -41,9 +44,6 @@ if ($nv_Request->isset_request('submit1', 'post')) {
     } elseif (!filter_var($row['email'], FILTER_VALIDATE_EMAIL)) {
         $error_email = 'Email không hợp lệ';
     }
-
-    $row['id_class'] = $nv_Request->get_int('id_class', 'post', 0);
-
 
     // Phần xử lý upload ảnh 
     if (isset($_FILES, $_FILES['image'], $_FILES['image']['tmp_name']) and is_uploaded_file($_FILES['image']['tmp_name'])) {

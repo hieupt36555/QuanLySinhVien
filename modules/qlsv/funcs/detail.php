@@ -23,7 +23,6 @@ function view_product_details($product_id)
 
     // Gán thông tin cho biến
     $product['class_name'] = !empty($class) ? $class['name'] : 'Chưa có lớp';
-    $product['birth'] = nv_date('d/m/y', $product['birth']);
     $product['image'] = NV_BASE_SITEURL . $product['image'];
 
     $xtpl = new XTemplate('detail.tpl', NV_ROOTDIR . '/themes/' . $module_info['template'] . '/modules/' . $module_file);
